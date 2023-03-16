@@ -15,6 +15,7 @@ export function authMiddleware(permissions?: string[]) {
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "Token não fornecido" });
     }
+    
     const token = authHeader.substring(7);
 
     try {

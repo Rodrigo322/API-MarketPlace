@@ -70,3 +70,22 @@ export const deleteManyUser = async (req: Request, res: Response) => {
 
   return res.json({ message: "Usuário deletados" });
 };
+
+export const getAllUser = async (req: Request, res: Response) => {
+  const users = await prisma.user.findMany({
+    select: {
+      name: true,
+      UserAccess: {
+        select: {
+          Access: {
+            select: {
+              name: true
+            }
+          }
+        }
+      }
+    }
+  });
+
+  return res.json(users);
+};
