@@ -29,20 +29,13 @@ export const createUser = async (req: Request, res: Response) => {
   const hashPassword = await hash(password, 8)
 
   const user = await prisma.user.create({
-    data: { name, email, password: hashPassword, Access: {
-      connect: {
-        name: accessName
-      }
+    data: { name, email, password: hashPassword, userAccess: {
+      
     } },
     select: {
       id: true,
       name: true,
       email: true,
-      Access: {
-        select: {
-          name: true
-        }
-      }
     }
   });
 
