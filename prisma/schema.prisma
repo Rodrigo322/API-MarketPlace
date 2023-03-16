@@ -8,21 +8,33 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
+  id         String       @id @default(uuid())
   name       String
-  email      String   @unique
+  email      String       @unique
   password   String
-  Access     Access?  @relation(fields: [accessId], references: [id])
-  accessId   String?
+  UserAccess UserAccess[]
   store      Store[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
 }
 
 model Access {
-  id         String   @id @default(uuid())
-  name       String   @unique
-  user       User[]
+  id         String       @id @default(uuid())
+  name       String       @unique
+  UserAccess UserAccess[]
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+}
+
+model UserAccess {
+  id String @id @default(uuid())
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Access   Access? @relation(fields: [accessId], references: [id])
+  accessId String?
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
