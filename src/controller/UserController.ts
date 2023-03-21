@@ -114,7 +114,7 @@ export const getUniqueUser = async (req: Request, res: Response) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id
+        id,
       },
       select: {
         id: true,
@@ -125,12 +125,18 @@ export const getUniqueUser = async (req: Request, res: Response) => {
             Access: {
               select: {
                 name: true,
-              }
-            }
-          }
-        }
-      }
-    })
+              },
+            },
+          },
+        },
+        store: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
 
     if(!user) {
       return res.status(204)

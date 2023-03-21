@@ -1,7 +1,19 @@
 import { Router } from "express";
 
 import { createAccess, getAllAccesses } from "./controller/AccessController";
-import { createProduct } from "./controller/ProductController";
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getUniqueProduct,
+  updateProduct,
+} from "./controller/ProductController";
+import {
+  createSale,
+  getAllSales,
+  getAllSalesByBuyer,
+  getAllSalesBySeller,
+} from "./controller/SaleController";
 import { signIn } from "./controller/SessionController";
 import { createStore, getAllStore } from "./controller/StoreController";
 import {
@@ -35,7 +47,44 @@ router.post(
   authMiddleware(["adm", "Vendedor"]),
   createProduct
 );
+router.get(
+  "/products",
+  authMiddleware(["adm", "Vendedor", "Comprador"]),
+  getAllProducts
+);
+router.put(
+  "/update-product/:productId",
+  authMiddleware(["adm", "Vendedor"]),
+  updateProduct
+);
+router.get(
+  "/get-unique-product/:productId",
+  authMiddleware(["adm", "Vendedor", "Comprador"]),
+  getUniqueProduct
+);
+router.delete(
+  "/delete-product/:productId",
+  authMiddleware(["adm", "Vendedor"]),
+  deleteProduct
+);
 
 router.post("/sign-in", signIn);
 
+router.post(
+  "/create-sale",
+  authMiddleware(["adm", "Vendedor", "Comprador"]),
+  createSale
+);
+router.get("/get-all-sales", authMiddleware(["adm"]), getAllSales);
 
+router.get(
+  "/get-all-sales-by-buyer",
+  authMiddleware(["adm", "Comprador"]),
+  getAllSalesByBuyer
+);
+
+router.get(
+  "/get-all-sales-by-seller",
+  authMiddleware(["adm", "Vendedor"]),
+  getAllSalesBySeller
+);
