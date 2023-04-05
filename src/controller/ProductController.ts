@@ -65,7 +65,13 @@ export const updateProduct = async (req: Request, res: Response) => {
 };
 
 export const getAllProducts = async (req: Request, res: Response) => {
-  const Products = await prisma.product.findMany();
+  const page = parseInt(req.query.page as string) || 1;
+  const perPage = parseInt(req.query.perPage as string) || 10;
+
+  const Products = await prisma.product.findMany({
+    skip: (page - 1) * perPage,
+    take: perPage,
+  });
 
   return res.json(Products);
 };

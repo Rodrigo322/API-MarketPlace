@@ -66,7 +66,9 @@ export const createSale = async (req: Request, res: Response) => {
     return res
       .status(201)
       .json({ sale, message: "Compra realizada com sucesso." });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 };
 
 export const getAllSales = async (req: Request, res: Response) => {
